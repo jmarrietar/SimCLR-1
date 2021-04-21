@@ -74,7 +74,15 @@ def main():
 
     model = ResNetSimCLR(base_model=args.arch, out_dim=args.out_dim)
 
-    optimizer = torch.optim.Adam(model.parameters(), args.lr, weight_decay=args.weight_decay)
+    # TO DO: Add a Resume if statement
+    # Resume from Checkpoint
+    model_name = 'checkpoint_0500.pth.tar'
+    checkpoint = torch.load('/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-pytorch/{}'.format(model_name), map_location=args.device)
+
+    model.load_state_dict(checkpoint['state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer'])
+
+    # optimizer = torch.optim.Adam(model.parameters(), args.lr, weight_decay=args.weight_decay)
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_loader), eta_min=0,
                                                            last_epoch=-1)

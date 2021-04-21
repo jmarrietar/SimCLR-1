@@ -74,6 +74,11 @@ def main():
 
     model = ResNetSimCLR(base_model=args.arch, out_dim=args.out_dim)
 
+    ptimizer = torch.optim.Adam(model.parameters(), args.lr, weight_decay=args.weight_decay)
+
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_loader), eta_min=0,
+                                                           last_epoch=-1)
+
     # TO DO: Add a Resume if statement
     # Resume from Checkpoint
     model_name = 'checkpoint_0500.pth.tar'
@@ -81,11 +86,6 @@ def main():
 
     model.load_state_dict(checkpoint['state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer'])
-
-    # optimizer = torch.optim.Adam(model.parameters(), args.lr, weight_decay=args.weight_decay)
-
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_loader), eta_min=0,
-                                                           last_epoch=-1)
 
     #  It’s a no-op if the 'gpu_index' argument is a negative integer or None.
     with torch.cuda.device(args.gpu_index):

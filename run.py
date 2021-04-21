@@ -85,7 +85,7 @@ def main():
     checkpoint = torch.load('/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-pytorch/{}'.format(model_name), map_location=args.device)
 
     model.load_state_dict(checkpoint['state_dict'])
-    optimizer.load_state_dict(checkpoint['optimizer'])
+    #optimizer.load_state_dict(checkpoint['optimizer'])
 
     #  It’s a no-op if the 'gpu_index' argument is a negative integer or None.
     with torch.cuda.device(args.gpu_index):

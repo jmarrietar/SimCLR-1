@@ -50,7 +50,8 @@ parser.add_argument('--temperature', default=0.07, type=float,
 parser.add_argument('--n-views', default=2, type=int, metavar='N',
                     help='Number of views for contrastive learning training.')
 parser.add_argument('--gpu-index', default=0, type=int, help='Gpu index.')
-
+parser.add_argument('--unlabeled', default='sample@20000', type=str,
+                        help='unlabeled dataset')
 
 def main():
     args = parser.parse_args()
@@ -81,10 +82,12 @@ def main():
 
     # TO DO: Add a Resume if statement
     # Resume from Checkpoint
+    """
     model_name = 'checkpoint_0500.pth.tar'
     checkpoint = torch.load('/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-pytorch/{}'.format(model_name), map_location=args.device)
 
     model.load_state_dict(checkpoint['state_dict'])
+    """
     #optimizer.load_state_dict(checkpoint['optimizer'])
 
     #  It’s a no-op if the 'gpu_index' argument is a negative integer or None.

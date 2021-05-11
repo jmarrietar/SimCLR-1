@@ -6,8 +6,9 @@ from exceptions.exceptions import InvalidDatasetSelection
 
 
 class ContrastiveLearningDataset:
-    def __init__(self, root_folder):
+    def __init__(self, root_folder, unlabeled):
         self.root_folder = root_folder
+        self.unlabeled = unlabeled
 
     @staticmethod
     def get_simclr_pipeline_transform(size, s=1):
@@ -33,8 +34,8 @@ class ContrastiveLearningDataset:
                                                               self.get_simclr_pipeline_transform(96),
                                                               n_views),
                                                           download=True),
-                          
-                          'dr': lambda: datasets.ImageFolder(root="{}/train".format(args.unlabeled), 
+
+                          'dr': lambda: datasets.ImageFolder(root="{}/train".format(self.unlabeled), 
                                                              transform=ContrastiveLearningViewGenerator(
                                                               self.get_simclr_pipeline_transform(224),
                                                               n_views))}

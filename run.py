@@ -65,7 +65,7 @@ def main():
         args.device = torch.device('cpu')
         args.gpu_index = -1
 
-    dataset = ContrastiveLearningDataset(args.data)
+    dataset = ContrastiveLearningDataset(args.data, args.unlabeled)
 
     train_dataset = dataset.get_dataset(args.dataset_name, args.n_views)
 

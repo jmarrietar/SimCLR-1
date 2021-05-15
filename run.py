@@ -86,7 +86,7 @@ def main():
     if args.resume_epochs:
         resume_model_name = "checkpoint_{:04d}.pth.tar".format(args.resume_epochs)
         checkpoint = torch.load(
-            "/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-pytorch/{}".format(
+            "/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-DR-pytorch/{}".format(
                 resume_model_name
             ),
             map_location=args.device,

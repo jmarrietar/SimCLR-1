@@ -71,7 +71,7 @@ class SimCLR(object):
         if self.args.resume_epochs:
             start_epoch = self.args.resume_epochs
         
-        end_epoch = start_epoch + self.args.epochs
+        end_epoch = self.args.epochs
 
         for epoch_counter in range(start_epoch, end_epoch):
             for images, _ in tqdm(train_loader):
@@ -80,7 +80,7 @@ class SimCLR(object):
                 images = images.to(self.args.device)
 
                 with autocast(enabled=self.args.fp16_precision):
-                    features = self.model(images)
+                    features = selfmodel.(images)
                     logits, labels = self.info_nce_loss(features)
                     loss = self.criterion(logits, labels)
 

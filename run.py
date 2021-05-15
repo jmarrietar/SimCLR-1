@@ -52,6 +52,7 @@ parser.add_argument('--n-views', default=2, type=int, metavar='N',
 parser.add_argument('--gpu-index', default=0, type=int, help='Gpu index.')
 parser.add_argument('--unlabeled', default='sample@20000', type=str,
                         help='unlabeled dataset')
+parser.add_argument('--resume-epochs', type=int)
 
 def main():
     args = parser.parse_args()
@@ -64,6 +65,8 @@ def main():
     else:
         args.device = torch.device('cpu')
         args.gpu_index = -1
+
+    print("Device is {}".format(args.device))
 
     dataset = ContrastiveLearningDataset(args.data, args.unlabeled)
 
@@ -80,15 +83,17 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_loader), eta_min=0,
                                                            last_epoch=-1)
 
-    # TO DO: Add a Resume if statement
-    # Resume from Checkpoint
-    """
-    model_name = 'checkpoint_0500.pth.tar'
-    checkpoint = torch.load('/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-pytorch/{}'.format(model_name), map_location=args.device)
-
-    model.load_state_dict(checkpoint['state_dict'])
-    """
-    #optimizer.load_state_dict(checkpoint['optimizer'])
+    if args.resume_epochs:
+        resume_model_name = "checkpoint_{:04d}.pth.tar".format(args.resume_epochs)
+        checkpoint = torch.load(
+            "/content/drive/MyDrive/Colab Notebooks/SimCLR/models/SimCLR-1-pytorch/{}".format(
+                resume_model_name
+            ),
+            map_location=args.device,
+        )
+        model.load_state_dict(checkpoint["state_dict"])
+        optimizer.load_state_dict(checkpoint["optimizer"])
+        print("Resuming Tarining ...")
 
     #  It’s a no-op if the 'gpu_index' argument is a negative integer or None.
     with torch.cuda.device(args.gpu_index):

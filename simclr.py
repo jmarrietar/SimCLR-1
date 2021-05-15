@@ -68,7 +68,7 @@ class SimCLR(object):
         print(f"Training with gpu: {self.args.disable_cuda}.")
 
         start_epoch = 0
-        if args.resume_epochs
+        if args.resume_epochs:
             start_epoch = args.resume_epochs
         
         end_epoch = start_epoch + self.args.epochs

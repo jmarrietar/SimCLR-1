@@ -35,7 +35,7 @@ class ContrastiveLearningDataset:
                                                               n_views),
                                                           download=True),
 
-                          'dr': lambda: datasets.ImageFolder(root="{}/train".format(self.unlabeled), 
+                          'dr': lambda: datasets.ImageFolder(root="{}".format(self.unlabeled), 
                                                              transform=ContrastiveLearningViewGenerator(
                                                               self.get_simclr_pipeline_transform(224),
                                                               n_views))}

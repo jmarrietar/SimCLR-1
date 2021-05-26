@@ -56,6 +56,8 @@ class SimCLR(object):
 
     def train(self, train_loader):
 
+        best_loss = 10000
+
         scaler = GradScaler(enabled=self.args.fp16_precision)
 
         # save config file
@@ -105,6 +107,21 @@ class SimCLR(object):
                 self.scheduler.step()
             logging.debug(f"Epoch: {epoch_counter}\tLoss: {loss}\tTop1 accuracy: {top1[0]}")
             print(f"Epoch: {epoch_counter}\tLoss: {loss}\tTop1 accuracy: {top1[0]}")
+
+            is_best_loss = loss < best_loss
+            best_loss = min(loss, best_loss)
+
+            if is_best_loss:
+                checkpoint_name = 'checkpoint_{:04d}.pth.tar'.format(self.args.epochs)
+                save_checkpoint({
+                    'epoch': self.args.epochs,
+                    'arch': self.args.arch,
+                    'state_dict': self.model.state_dict(),
+                    'optimizer': self.optimizer.state_dict(),
+                }, is_best=False, filename=os.path.join(self.writer.log_dir, checkpoint_name))
+                logging.info(f"Model checkpoint and metadata has been saved at {self.writer.log_dir}.")
+                print(f"Model checkpoint and metadata has been saved at {self.writer.log_dir}.")
+
 
         logging.info("Training has finished.")
         print("Training has finished.")
